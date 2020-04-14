@@ -17,4 +17,9 @@ public class MainActivity extends AppCompatActivity {
     public void click1(View view) {
         startActivity(new Intent(this,ViewBaseActivity1.class));
     }
+
+    public void recycleViewClick(View view) {
+
+        startActivity(new Intent(this,RVTestActivity.class));
+    }
 }
