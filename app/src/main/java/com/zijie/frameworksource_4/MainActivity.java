@@ -22,4 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(new Intent(this,RVTestActivity.class));
     }
+
+    public void cardviewClick(View view) {
+        startActivity(new Intent(this,CardViewTestActivity.class));
+    }
 }
