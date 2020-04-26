@@ -26,4 +26,8 @@ public class MainActivity extends AppCompatActivity {
     public void cardviewClick(View view) {
         startActivity(new Intent(this,CardViewTestActivity.class));
     }
+
+    public void flowClick(View view) {
+        startActivity(new Intent(this,TestFlowActivity.class));
+    }
 }
