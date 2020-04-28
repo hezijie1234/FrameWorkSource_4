@@ -17,6 +17,7 @@ public class MyFlowLayout extends ViewGroup {
     private List<View> curLineViews;
     private List<List<View>> allLines;
     private List<Integer> lineHeight;
+
     public MyFlowLayout(Context context) {
         this(context, null);
     }
@@ -27,7 +28,7 @@ public class MyFlowLayout extends ViewGroup {
 
     public MyFlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Log.e(TAG, "MyFlowLayout: "  );
+        Log.e(TAG, "MyFlowLayout: ");
     }
 
     private void init() {
@@ -57,32 +58,52 @@ public class MyFlowLayout extends ViewGroup {
             if (curLineWidth + child.getMeasuredWidth() > widthSize) {
                 allLines.add(curLineViews);
                 //记录每一行的行高
-                Log.e(TAG, "这一行的高度" + curLineHeight );
+                Log.e(TAG, "这一行的高度" + curLineHeight);
                 lineHeight.add(curLineHeight);
                 curLineViews = new ArrayList<>();
                 //换行时流式布局的高度需要累加
                 curHeight += curLineHeight;
                 //换行时流式布局的宽度要取最大值
-                curWidth = Math.max(curWidth,curLineWidth);
+                curWidth = Math.max(curWidth, curLineWidth);
                 curLineHeight = 0;
                 curLineWidth = 0;
             }
+            LayoutParams layoutParams = child.getLayoutParams();
             //当前行的宽度需要累加
             curLineWidth += child.getMeasuredWidth();
             //当前行的高度需要取最大高度
-            curLineHeight = Math.max(curLineHeight,child.getMeasuredHeight());
+            if (layoutParams.height != LayoutParams.MATCH_PARENT)
+                curLineHeight = Math.max(curLineHeight, child.getMeasuredHeight());
             curLineViews.add(child);
             //将最后一行加入
-            if (i == getChildCount() - 1){
+            if (i == getChildCount() - 1) {
                 allLines.add(curLineViews);
                 lineHeight.add(curLineHeight);
-                Log.e(TAG, "这一行的高度" + curLineHeight );
+                Log.e(TAG, "这一行的高度" + curLineHeight);
                 curHeight += curLineHeight;
-                curWidth = Math.max(curWidth,curLineWidth);
+                curWidth = Math.max(curWidth, curLineWidth);
             }
         }
-        Log.e(TAG, "onMeasure: 宽度=" + curWidth + "------高度=" + curHeight );
-        setMeasuredDimension(widthMode == MeasureSpec.EXACTLY ? widthSize : curWidth,heightMode == MeasureSpec.EXACTLY ? heightSize : curHeight);
+        //重新测量高度为match_Parent时，子view的高度设置成这一行的最高高度
+        remeasureChild(widthMeasureSpec, heightMeasureSpec);
+        Log.e(TAG, "onMeasure: 宽度=" + curWidth + "------高度=" + curHeight);
+        setMeasuredDimension(widthMode == MeasureSpec.EXACTLY ? widthSize : curWidth, heightMode == MeasureSpec.EXACTLY ? heightSize : curHeight);
+    }
+
+    private void remeasureChild(int widthMeasureSpec, int heightMeasureSpec) {
+        for (int i = 0; i < allLines.size(); i++) {
+            List<View> views = allLines.get(i);
+            int lineH = lineHeight.get(i);
+            for (int j = 0; j < views.size(); j++) {
+                View view = views.get(j);
+                LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams.height == LayoutParams.MATCH_PARENT) {
+                    layoutParams.height = lineH;
+                    view.setLayoutParams(layoutParams);
+                    measureChild(view, widthMeasureSpec, heightMeasureSpec);
+                }
+            }
+        }
     }
 
     @Override
@@ -95,18 +116,18 @@ public class MyFlowLayout extends ViewGroup {
             List<View> curViews = allLines.get(i);
             l = 0;
             r = 0;
-            if (i > 0){
+            if (i > 0) {
                 t += lineHeight.get(i - 1);
                 b += lineHeight.get(i - 1);
             }
 
             for (int j = 0; j < curViews.size(); j++) {
                 View child = curViews.get(j);
-                if (j > 0){
+                if (j > 0) {
                     l += curViews.get(j - 1).getMeasuredWidth();
                 }
                 r += child.getMeasuredWidth();
-                child.layout(l,t,r,b + child.getMeasuredHeight());
+                child.layout(l, t, r, b + child.getMeasuredHeight());
             }
         }
     }
