@@ -30,4 +30,8 @@ public class MainActivity extends AppCompatActivity {
     public void flowClick(View view) {
         startActivity(new Intent(this,TestFlowActivity.class));
     }
+
+    public void testCoor(View view) {
+        startActivity(new Intent(this,TestCoodActivity.class));
+    }
 }

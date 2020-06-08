@@ -30,6 +30,11 @@
             android:layout_height="wrap_content"
             android:onClick="flowClick"
             android:text="流式布局测试"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="testCoor"
+            android:text="CoordinatorLayout使用"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
