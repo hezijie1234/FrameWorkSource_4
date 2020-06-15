@@ -8,10 +8,20 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    private View rootView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rootView = findViewById(R.id.root_view);
+        final View viewById = findViewById(R.id.btn_scroll);
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,ScrollTestActivity.class));
+            }
+        });
     }
 
     public void click1(View view) {
