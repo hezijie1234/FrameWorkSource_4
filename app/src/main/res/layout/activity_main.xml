@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_view"
-    tools:context=".MainActivity">
+    tools:context=".animation.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,12 @@
             android:id="@+id/btn_scroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试控件移动"/>
+            android:text="测试控件移动"/>\
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="animaTest"
+            android:text="进入动画界面"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

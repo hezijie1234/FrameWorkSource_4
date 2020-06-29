@@ -8,6 +8,8 @@
 
 
         <com.zijie.frameworksource_4.MyFlowLayout
+            android:background="#5e77ff"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <Button
@@ -74,6 +76,70 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="定义属性资源文件16"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发件方骄17"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="接口了发件方骄傲龙卷风18"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="卡米拉玛19"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我就没法看20"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=".当用户选择21"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置的上班时间是22"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="页面23"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确定修改24"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择的上下班时间清空需要重新选择25"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="习近平为如期实现全面26"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我先向皮蓬道歉27"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="强 Doinb瑞兹豪取五杀28"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:text="兹豪取五杀29"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="五杀30"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Doinb瑞兹豪取五杀31"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="定义属性资源文件32"/>
         </com.zijie.frameworksource_4.MyFlowLayout>
 
 </RelativeLayout>

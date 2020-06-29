@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.zijie.frameworksource_4.animation.MainActivity2;
+
 public class MainActivity extends AppCompatActivity {
 
     private View rootView;
@@ -43,5 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void testCoor(View view) {
         startActivity(new Intent(this,TestCoodActivity.class));
+    }
+
+    public void animaTest(View view) {
+        startActivity(new Intent(this, MainActivity2.class));
     }
 }

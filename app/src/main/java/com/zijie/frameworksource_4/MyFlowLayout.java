@@ -4,9 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.OverScroller;
+import android.widget.Scroller;
 
 import androidx.core.view.ViewConfigurationCompat;
 
@@ -27,6 +30,11 @@ public class MyFlowLayout extends ViewGroup {
     private int contentHeight;
     //滑动灵敏度控制值
     private int mTouchSlop;
+    private int rootHeight;
+    private OverScroller mScroller;
+    private VelocityTracker mVelocityTracker;
+    private int mMinimumVelocity;
+    private int mMaximumVelocity;
 
     public MyFlowLayout(Context context) {
         this(context, null);
@@ -41,12 +49,42 @@ public class MyFlowLayout extends ViewGroup {
         Log.e(TAG, "MyFlowLayout: ");
         ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(viewConfiguration);//获取最小滑动距离
+        mScroller = new OverScroller(context);
+        mMinimumVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+        mMaximumVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+//        mOverscrollDistance = viewConfiguration.getScaledOverscrollDistance();
     }
 
     private void init() {
         curLineViews = new ArrayList<>();
         allLines = new ArrayList<>();
         lineHeight = new ArrayList<>();
+    }
+
+    private void initVelocityTrackerIfNotExists() {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+
+    }
+
+    private void recycleVelocityTracker() {
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
+
+    public void fling(int velocityY) {
+        if (getChildCount() > 0) {
+            int height = rootHeight;
+            int bottom = contentHeight;
+
+            mScroller.fling(getScrollX(), getScrollY(), 0, velocityY, 0, 0, 0,
+                    Math.max(0, bottom - height), 0, height / 2);
+
+            postInvalidateOnAnimation();
+        }
     }
 
 
@@ -58,6 +96,7 @@ public class MyFlowLayout extends ViewGroup {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        rootHeight = heightSize;
         int curWidth = 0;//FlowLayout当前的宽度
         int curHeight = 0;//FlowLayout当前的高度
         int curLineHeight = 0;//当前行的高度
@@ -134,6 +173,7 @@ public class MyFlowLayout extends ViewGroup {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         float y = ev.getY();
         float x = ev.getX();
+        Log.e(TAG, "onInterceptTouchEvent: 出发事件" );
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
                 isCanintercept = false;
@@ -149,21 +189,88 @@ public class MyFlowLayout extends ViewGroup {
                 //如果y轴距离大于x轴移动距离则可以判定为滑动
                 if (Math.abs(moveY) > Math.abs(moveX) && Math.abs(moveY) > mTouchSlop){
                     isCanintercept = true;
+                }else {
+                    isCanintercept = false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 isCanintercept = false;
                 break;
         }
+        Log.e(TAG, "onInterceptTouchEvent: isCanintercept = " + isCanintercept );
         //每次事件结束时记录
         mLastX = x;
         mLastY = y;
-        return super.onInterceptTouchEvent(ev);
+        return isCanintercept;
     }
+    //上一次移动结束的位置
+    private float mLastMoveY;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!isCanScroll){
+            return super.onTouchEvent(event);
+        }
+        initVelocityTrackerIfNotExists();
+        mVelocityTracker.addMovement(event);
+        float y = event.getY();
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                if (!mScroller.isFinished()){
+                    mScroller.abortAnimation();
+                }
+                mLastMoveY = y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                //本次移动的距离
+                float move = mLastMoveY - y;
+                Log.e(TAG, "onTouchEvent:move =  " + move );
+                int scrollY = getScrollY();//偏移量
+                Log.e(TAG, "onTouchEvent:getScrollY =  " + scrollY );
+//                int scroll = scrollY + (int) move;
+//                if (scroll < 0){//不滑过顶部
+//                    scroll = 0;
+//                }
+//                //不滑过底部
+//                if (scroll > contentHeight - rootHeight){
+//                    scroll = contentHeight - rootHeight;
+//                }
+                //向上滑传递正值
+//                scrollTo(0,scroll);
+                mScroller.startScroll(0,mScroller.getFinalY(),0,(int)move);
+                invalidate();
+                mLastMoveY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+                final VelocityTracker velocityTracker = mVelocityTracker;
+                velocityTracker.computeCurrentVelocity(500, mMaximumVelocity);
+                int initialVelocity = (int) velocityTracker.getYVelocity();
+
+                if ((Math.abs(initialVelocity) > mMinimumVelocity)) {
+                    fling(-initialVelocity);
+                } else if (mScroller.springBack(getScrollX(), getScrollY(), 0, 0, 0,
+                        ( contentHeight- rootHeight))) {
+                    postInvalidateOnAnimation();
+                }
+                break;
+        }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()){
+            int currY = mScroller.getCurrY();
+//            if (currY < 0){
+//                currY = 0;
+//            }
+//            if (currY > contentHeight - rootHeight){
+//                currY = contentHeight - rootHeight;
+//            }
+            scrollTo(0,currY);
+            postInvalidate();
+        }
     }
 
     @Override
