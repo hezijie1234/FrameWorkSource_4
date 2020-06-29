@@ -10,10 +10,12 @@ import android.animation.PropertyValuesHolder;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
@@ -280,6 +282,7 @@ public class PropertyAnimationActivity extends AppCompatActivity {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Log.e("111", "onAnimationUpdate:自定义属性动画 "  );
                 PropertyBean propertyBean = (PropertyBean) valueAnimator.getAnimatedValue();
                 if (propertyBean.getBackgroundColor() != 0 && propertyBean.getBackgroundColor() != 1) {
                     mTarget.setBackgroundColor(propertyBean.getBackgroundColor());
@@ -297,13 +300,14 @@ public class PropertyAnimationActivity extends AppCompatActivity {
     }
 
     private void doAnimatorByViewPropertyAnimator() {
-        mTarget.animate()
+        ViewPropertyAnimator viewPropertyAnimator = mTarget.animate()
                 .rotationX(360f)
                 .alpha(0.5f)
                 .scaleX(3).scaleY(3)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .setDuration(3000)
                 .setStartDelay(0);
+
 
     }
 
