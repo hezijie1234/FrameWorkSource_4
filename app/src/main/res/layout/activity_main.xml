@@ -46,6 +46,11 @@
             android:layout_height="wrap_content"
             android:onClick="animaTest"
             android:text="进入动画界面"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="viewpagerTest"
+            android:text="viewpager高度处理"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

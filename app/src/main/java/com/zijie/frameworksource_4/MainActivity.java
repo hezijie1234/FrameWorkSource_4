@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.zijie.frameworksource_4.animation.MainActivity2;
+import com.zijie.frameworksource_4.view_pager.ViewpagerTestActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,5 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void animaTest(View view) {
         startActivity(new Intent(this, MainActivity2.class));
+    }
+
+    public void viewpagerTest(View view) {
+        startActivity(new Intent(this, ViewpagerTestActivity.class));
     }
 }
