@@ -9,6 +9,7 @@ import android.view.View;
 import com.zijie.frameworksource_4.animation.MainActivity2;
 import com.zijie.frameworksource_4.lazy3.Main3Activity;
 import com.zijie.frameworksource_4.view_pager.ViewpagerTestActivity;
+import com.zijie.frameworksource_4.webview.WebMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,5 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void fragmentVisible(View view) {
         startActivity(new Intent(this, Main3Activity.class));
+    }
+
+    public void webviewTest(View view) {
+        startActivity(new Intent(this, WebMainActivity.class));
     }
 }

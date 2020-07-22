@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zijie.servicemanager" >
+    <application>
+
+        <provider
+            android:exported="false"
+            android:authorities="${applicationId}.svcmgr"
+            android:name="com.zijie.servicemanager.ServiceProvider"/>
+
+    </application>
+</manifest>

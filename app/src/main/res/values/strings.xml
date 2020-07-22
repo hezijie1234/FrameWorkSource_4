@@ -12,4 +12,5 @@
     <string name="action_bycustom">自定义属性动画</string>
     <string name="action_byviewpropertyanimator">ViewPropertyAnimator</string>
     <string name="action_bylayoutanimator">LayoutAnimator(hide/show)</string>
+    <string name="share">Share</string>
 </resources>

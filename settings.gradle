@@ -1,1 +1,1 @@
-include ':app', ':animationdemo01'
+include ':app', ':animationdemo01', ':base', ':common', ':xiangxuewebview', ':servicemanager'

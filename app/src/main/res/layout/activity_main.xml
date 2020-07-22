@@ -56,6 +56,11 @@
             android:layout_height="wrap_content"
             android:onClick="fragmentVisible"
             android:text="fragment的懒加载"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="webviewTest"
+            android:text="webview独立进程测试"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
